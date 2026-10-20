@@ -13,18 +13,18 @@ const { ironPair, nifgashim, note } = Astro.props;
 <footer class="footer">
   <div class="container inner">
     <div class="logos">
-      <Logo image={ironPair} text="צמד ברזל" height={48} />
+      <Logo image={ironPair} text="צמד ברזל" height={72} />
       <span class="divider" aria-hidden="true"></span>
-      <Logo image={nifgashim} text="נפגשים" height={48} />
+      <Logo image={nifgashim} text="נפגשים" height={72} />
     </div>
     {note && <p class="note">{note}</p>}
   </div>
 </footer>
 
 <style>
-  .footer { padding-block: clamp(48px, 7vw, 80px); background: var(--paper); }
+  .footer { padding-block: clamp(48px, 7vw, 80px); background: #fff; border-top: 1px solid var(--line); }
   .inner { display: grid; justify-items: center; gap: 18px; text-align: center; }
   .logos { display: flex; align-items: center; gap: clamp(20px, 4vw, 40px); flex-wrap: wrap; justify-content: center; }
-  .divider { width: 1px; height: 40px; background: var(--line); }
+  .divider { width: 1px; height: 56px; background: var(--line); }
   .note { color: var(--muted); font-size: 0.95rem; }
 </style>

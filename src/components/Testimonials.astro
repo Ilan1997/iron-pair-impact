@@ -81,12 +81,13 @@ const hasMore = all.length > visibleCount;
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: clamp(14px, 2vw, 24px);
+    columns: 3 290px;
+    column-gap: clamp(14px, 2vw, 24px);
   }
   .quotes.is-collapsed .is-extra { display: none; }
   .quote {
+    break-inside: avoid;
+    margin-bottom: clamp(14px, 2vw, 24px);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -97,7 +98,7 @@ const hasMore = all.length > visibleCount;
   }
   .quote.is-todo { background: rgb(255 255 255 / 0.55); box-shadow: none; border: 1.5px dashed #c9bfae; }
   .quote .todo-badge { align-self: flex-start; margin-bottom: 14px; }
-  .mark { width: 34px; height: auto; fill: var(--accent); opacity: 0.9; transform: scaleX(-1); }
+  .mark { width: 34px; height: auto; fill: var(--accent-brand); transform: scaleX(-1); }
   blockquote { margin: 18px 0 0; }
   blockquote p { font-size: clamp(1.08rem, 0.4vw + 1rem, 1.22rem); line-height: 1.75; font-weight: 500; }
   .is-todo blockquote p { color: var(--muted); }
@@ -111,9 +112,6 @@ const hasMore = all.length > visibleCount;
   }
   .who strong { color: var(--ink); font-weight: 700; }
 
-  @media (min-width: 980px) {
-    .quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  }
 
   .more-wrap { text-align: center; margin-top: 36px; }
   .more {

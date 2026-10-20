@@ -12,42 +12,85 @@
 #              אם מופיעים בה תלמידים או קטינים.
 #  status    = published להצגה, draft להסתרה.
 #
-#  הפריטים הריקים למטה הם רק תבנית ("להשלמה") ואינם מוצגים במצב final.
+#  סדר הפריטים = סדר התמונות בגלריה.
+#  (תמונת השער ותמונת הסיום מוגדרות בקובץ site.yaml)
 # ==========================================================
 
 items:
-  - file: ""
-    alt: "להשלמה"
+  - file: "auditorium-pair-01.jpg"
+    alt: "צמד מילואימניקים מצטלם עם אולם מלא תלמידים בחולצות לבנות"
     caption: ""
-    approved: false
-    status: draft
+    approved: true
+    status: published
 
-  - file: ""
-    alt: "להשלמה"
+  - file: "hall-group-selfie.jpg"
+    alt: "צמד מילואימניקים מצטלם בחיבוק עם קבוצת תלמידים אחרי מפגש"
     caption: ""
-    approved: false
-    status: draft
+    approved: true
+    status: published
 
-  - file: ""
-    alt: "להשלמה"
+  - file: "gym-pair-uniform.jpg"
+    alt: "שני מילואימניקים במדים מצטלמים עם צוות בית הספר ואולם ספורט מלא תלמידים"
     caption: ""
-    approved: false
-    status: draft
+    approved: true
+    status: published
 
-  - file: ""
-    alt: "להשלמה"
+  - file: "stage-pair-red-seats.jpg"
+    alt: "צמד מילואימניקים על הבמה, ומאחוריהם תלמידים במושבים אדומים"
     caption: ""
-    approved: false
-    status: draft
+    approved: true
+    status: published
 
-  - file: ""
-    alt: "להשלמה"
+  - file: "hall-pair-white-shirts.jpg"
+    alt: "צמד מילואימניקים מצטלם עם אולם גדול של תלמידים"
     caption: ""
-    approved: false
-    status: draft
+    approved: true
+    status: published
 
-  - file: ""
-    alt: "להשלמה"
+  - file: "classroom-pair-selfie.jpg"
+    alt: "צמד מילואימניקים מצטלם עם תלמידות בכיתה"
     caption: ""
-    approved: false
-    status: draft
+    approved: true
+    status: published
+
+  - file: "hall-pair-evening.jpg"
+    alt: "צמד מילואימניקים מצטלם עם בני נוער באולם"
+    caption: ""
+    approved: true
+    status: published
+
+  - file: "auditorium-mic.jpg"
+    alt: "מילואימניק עם מיקרופון באודיטוריום מלא בני נוער"
+    caption: ""
+    approved: true
+    status: published
+
+  - file: "bleachers-pair.jpg"
+    alt: "צמד מילואימניקים מצטלם מול יציע מלא תלמידים"
+    caption: ""
+    approved: true
+    status: published
+
+  - file: "classroom-group-thumbs.jpg"
+    alt: "תלמידים ומילואימניק מצטלמים יחד באגודל למעלה בסיום מפגש"
+    caption: ""
+    approved: true
+    status: published
+
+  - file: "classroom-selfie-back.jpg"
+    alt: "שני מילואימניקים מצטלמים עם כיתה מלאה"
+    caption: ""
+    approved: true
+    status: published
+
+  - file: "classroom-presentation.jpg"
+    alt: "צמד מילואימניקים מציג את סיפורו מול כיתה"
+    caption: ""
+    approved: true
+    status: published
+
+  - file: "stage-selfie-portrait.jpg"
+    alt: "מילואימניק על הבמה מול קהל תלמידים, ובן הצמד שלו מדבר ברקע"
+    caption: ""
+    approved: true
+    status: published

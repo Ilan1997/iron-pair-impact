@@ -11,7 +11,7 @@ const c = getContent();
 
 <BaseLayout title="צמד ברזל – דיווח לשותפים" description="דיווח אישי לשותפי צמד ברזל." allowIndex={false}>
   <main id="main" class="home">
-    <Logo image={c.logos.ironPair} text="צמד ברזל" height={56} tone="light" />
+    <Logo image={c.logos.ironPair} text="צמד ברזל" height={110} />
     <h1>דיווח אישי לשותפי צמד ברזל</h1>
     <p>הדיווחים נשלחים לכל שותף בקישור אישי.</p>
   </main>
@@ -26,9 +26,8 @@ const c = getContent();
     gap: 18px;
     text-align: center;
     padding: 24px;
-    background: var(--ink);
-    color: #fff;
+    background: var(--paper);
   }
   h1 { font-size: clamp(1.6rem, 3vw + 0.6rem, 2.4rem); margin-top: 12px; }
-  p { color: rgb(255 255 255 / 0.72); }
+  p { color: var(--muted); }
 </style>

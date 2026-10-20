@@ -13,33 +13,10 @@ interface Props {
   greeting: string;
 }
 const { image, imageAlt, draft, eyebrow, title, subtitle, greeting } = Astro.props;
+const hasMedia = Boolean(image) || draft;
 ---
 
-<section class="hero" id="top" aria-labelledby="hero-title">
-  <div class="hero-media">
-    {
-      image ? (
-        <Picture
-          src={image}
-          alt={imageAlt}
-          widths={[640, 960, 1440, 1920, 2560]}
-          sizes="100vw"
-          formats={['avif', 'webp']}
-          loading="eager"
-          fetchpriority="high"
-          class="hero-img"
-        />
-      ) : (
-        draft && (
-          <div class="hero-ph">
-            <Placeholder label="תמונת שער ממפגש של צמד ברזל" ratio="16/9" tone="dark" />
-          </div>
-        )
-      )
-    }
-    <div class="hero-shade" aria-hidden="true"></div>
-  </div>
-
+<section class:list={['hero', { 'has-media': hasMedia }]} id="top" aria-labelledby="hero-title">
   <div class="container hero-content">
     <p class="hero-eyebrow reveal">{eyebrow}</p>
     <h1 id="hero-title" class="reveal" style="--delay:.08s">
@@ -47,6 +24,27 @@ const { image, imageAlt, draft, eyebrow, title, subtitle, greeting } = Astro.pro
     </h1>
     <p class="hero-sub reveal" style="--delay:.16s">{subtitle}</p>
   </div>
+
+  {
+    hasMedia && (
+      <div class="container hero-media reveal" style="--delay:.22s">
+        {image ? (
+          <Picture
+            src={image}
+            alt={imageAlt}
+            widths={[640, 960, 1280, 1600, 2048]}
+            sizes="(max-width: 1160px) calc(100vw - 32px), 1080px"
+            formats={['avif', 'webp']}
+            loading="eager"
+            fetchpriority="high"
+            class="hero-img"
+          />
+        ) : (
+          <Placeholder label="תמונת שער ממפגש של צמד ברזל" ratio="16/9" tone="dark" />
+        )}
+      </div>
+    )
+  }
 </section>
 
 <div class="container greeting-wrap">
@@ -59,43 +57,23 @@ const { image, imageAlt, draft, eyebrow, title, subtitle, greeting } = Astro.pro
 <style>
   .hero {
     position: relative;
-    min-height: min(92svh, 860px);
-    display: flex;
-    align-items: flex-end;
     color: #fff;
-    background: var(--ink);
-    isolation: isolate;
+    background:
+      radial-gradient(90% 70% at 90% 0%, rgb(115 130 87 / 0.32), transparent 60%),
+      linear-gradient(180deg, var(--ink-deep), var(--ink));
+    padding-top: clamp(104px, 13vw, 160px);
+    padding-bottom: clamp(56px, 8vw, 96px);
     overflow: hidden;
   }
-  .hero-media { position: absolute; inset: 0; z-index: -1; }
-  .hero-media :global(.hero-img),
-  .hero-media :global(picture) { width: 100%; height: 100%; }
-  .hero-media :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
-
-  .hero-ph {
-    position: absolute;
-    top: 84px;
-    inset-inline-end: var(--gutter);
-    width: min(320px, 60vw);
-    opacity: 0.9;
-  }
-  @media (min-width: 900px) {
-    .hero-ph { top: 50%; transform: translateY(-60%); width: min(420px, 32vw); }
-  }
-
-  .hero-shade {
-    position: absolute;
-    inset: 0;
+  /* כשיש תמונה: הרקע הכהה נגמר באמצע התמונה */
+  .hero.has-media {
+    padding-bottom: 0;
     background:
-      linear-gradient(180deg, rgb(17 28 38 / 0.55) 0%, rgb(17 28 38 / 0) 28%),
-      linear-gradient(0deg, rgb(17 28 38 / 0.96) 0%, rgb(17 28 38 / 0.7) 38%, rgb(17 28 38 / 0.1) 75%),
-      radial-gradient(120% 80% at 85% 10%, rgb(166 75 36 / 0.28), transparent 60%);
+      radial-gradient(90% 70% at 90% 0%, rgb(115 130 87 / 0.32), transparent 60%),
+      linear-gradient(180deg, var(--ink-deep), var(--ink)) top / 100% calc(100% - clamp(90px, 16vw, 240px)) no-repeat,
+      var(--paper);
   }
 
-  .hero-content {
-    padding-top: 140px;
-    padding-bottom: clamp(120px, 15vw, 170px);
-  }
   .hero-eyebrow {
     display: inline-block;
     font-size: 0.95rem;
@@ -103,31 +81,43 @@ const { image, imageAlt, draft, eyebrow, title, subtitle, greeting } = Astro.pro
     letter-spacing: 0.02em;
     color: var(--accent-on-dark);
     padding: 7px 16px;
-    border: 1px solid rgb(232 165 127 / 0.45);
+    border: 1px solid rgb(194 207 156 / 0.4);
     border-radius: 999px;
-    background: rgb(17 28 38 / 0.35);
-    backdrop-filter: blur(6px);
   }
   h1 {
     margin-top: 22px;
-    font-size: clamp(2.2rem, 5.2vw + 0.6rem, 4.6rem);
-    line-height: 1.08;
-    max-width: 17ch;
+    font-size: clamp(2.2rem, 4.8vw + 0.6rem, 4.4rem);
+    line-height: 1.1;
+    max-width: 19ch;
     letter-spacing: -0.02em;
   }
   .q { color: var(--accent-on-dark); }
   .hero-sub {
-    margin-top: 22px;
-    max-width: 44ch;
+    margin-top: 20px;
+    max-width: 46ch;
     font-size: clamp(1.1rem, 0.6vw + 1rem, 1.35rem);
-    color: rgb(255 255 255 / 0.84);
+    color: rgb(255 255 255 / 0.82);
   }
 
-  .greeting-wrap { position: relative; margin-top: calc(clamp(70px, 9vw, 110px) * -1); z-index: 2; }
+  .hero-media { margin-top: clamp(36px, 5vw, 60px); }
+  .hero-media :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: center 55%;
+    border-radius: var(--radius);
+    box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.55);
+  }
+  @media (max-width: 640px) {
+    .hero-media :global(img) { aspect-ratio: 4 / 3; }
+  }
+
+  .greeting-wrap { position: relative; margin-top: clamp(28px, 4vw, 48px); }
   .greeting {
     background: #fff;
     border-radius: var(--radius);
-    box-shadow: inset -5px 0 0 var(--accent), var(--shadow);
+    box-shadow: inset -5px 0 0 var(--accent-brand), var(--shadow);
     padding: clamp(26px, 4vw, 48px) clamp(24px, 4.5vw, 56px);
     max-width: 820px;
   }

@@ -1,28 +1,42 @@
 # ==========================================================
-#  השפעה ברשתות ובתקשורת – סרטונים וכתבות
+#  השפעה ברשתות ובתקשורת – סרטונים וקישורים
 #
-#  type      = youtube (סרטון) או article (כתבה בקישור)
-#  url       = הקישור המלא. ליוטיוב אפשר להדביק כל סוג קישור
-#              (youtube.com/watch?v=... או youtu.be/...)
-#  title     = כותרת הכתבה/הסרטון
+#  type      = youtube   (סרטון יוטיוב – מוצג עם תמונה ונטען בלחיצה)
+#              instagram (קישור לאינסטגרם)
+#              facebook  (קישור לפייסבוק)
+#              article   (כתבה באתר כלשהו)
+#  url       = הקישור המלא.
+#  title     = כותרת
 #  outlet    = שם כלי התקשורת (אופציונלי)
 #  date      = תאריך פרסום, שנה-חודש-יום (אופציונלי)
 #  status    = published להצגה, draft להסתרה.
-#
-#  סרטוני יוטיוב נטענים רק כשלוחצים עליהם, כדי שהאתר יישאר מהיר.
 # ==========================================================
 
 items:
   - type: youtube
-    url: ""
-    title: "להשלמה – כתבה ראשונה (קישור ליוטיוב)"
-    outlet: ""
+    url: "https://youtu.be/VCn0xOMvTf0"
+    title: "ראיון עם צמד ברזל מבית נפגשים"
+    outlet: "ערוץ 12"
     date: ""
-    status: draft
+    status: published
 
   - type: youtube
-    url: ""
-    title: "להשלמה – כתבה שנייה (קישור ליוטיוב)"
+    url: "https://youtu.be/t4jIxBeHdKw"
+    title: "בני ונימי – רגע של חוכמה"
     outlet: ""
     date: ""
-    status: draft
+    status: published
+
+  - type: instagram
+    url: "https://www.instagram.com/reel/Deq2YPhqZOk/"
+    title: "צמד ברזל באינסטגרם"
+    outlet: ""
+    date: ""
+    status: published
+
+  - type: facebook
+    url: "https://www.facebook.com/share/1DC8VK15eE/"
+    title: "צמד ברזל בפייסבוק"
+    outlet: ""
+    date: ""
+    status: published

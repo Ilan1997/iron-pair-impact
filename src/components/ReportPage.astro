@@ -35,7 +35,7 @@ const links = [
   allowIndex={c.site.allowSearchEngines}
   draft={c.draft}
 >
-  <Header logo={c.logos.ironPair} links={links} />
+  <Header links={links} />
   <main id="main">
     <Hero
       image={c.heroImage}
@@ -53,7 +53,6 @@ const links = [
       updatedAt={c.stats.updatedAt}
       final={c.stats.final}
       items={c.stats.items}
-      achievements={c.stats.achievements}
     />
     <Gallery
       title={c.site.gallery.title}

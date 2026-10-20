@@ -72,10 +72,6 @@ const statsSchema = z.object({
       }),
     )
     .default([]),
-  achievements: z
-    .array(z.object({ title: z.string(), text: str, status }))
-    .nullish()
-    .transform((v) => v ?? []),
 });
 
 const gallerySchema = z.object({
@@ -114,7 +110,7 @@ const mediaSchema = z.object({
   items: z
     .array(
       z.object({
-        type: z.enum(['youtube', 'article']),
+        type: z.enum(['youtube', 'instagram', 'facebook', 'article']),
         url: str,
         title: z.string(),
         outlet: str,
@@ -202,7 +198,6 @@ export function getContent() {
   const mediaPlaceholders = draft ? media.items.filter((m) => !(m.url && m.status === 'published')) : [];
 
   const statItems = stats.items.filter((s) => s.verified || draft);
-  const achievements = stats.achievements.filter((a) => a.status === 'published' || draft);
 
   const heroImage = getPhoto(site.heroImage);
   const closingImage = getPhoto(site.closingImage);
@@ -212,7 +207,7 @@ export function getContent() {
     draft,
     heroImage,
     closingImage,
-    stats: { ...stats, items: statItems, achievements },
+    stats: { ...stats, items: statItems },
     photos,
     photoPlaceholders,
     quotes,
