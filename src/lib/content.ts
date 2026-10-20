@@ -238,3 +238,6 @@ export function withBase(p: string): string {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   return `${base}/${p.replace(/^\//, '')}`;
 }
+
+/** פורמטי תמונה: באירוח כ-Artifact מסתפקים ב-WebP כדי לשמור על משקל נמוך */
+export const imgFormats: ('avif' | 'webp')[] = process.env.TARGET === 'artifact' ? ['webp'] : ['avif', 'webp'];

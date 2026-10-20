@@ -9,6 +9,7 @@ interface Props {
   placeholders: Item[];
 }
 const { title, subtitle, items, placeholders } = Astro.props;
+const linkOnly = process.env.TARGET === 'artifact';
 const videos = items.filter((m) => m.type === 'youtube' && youtubeId(m.url));
 const links = items.filter((m) => !videos.includes(m));
 const platform: Record<string, string> = { instagram: 'אינסטגרם', facebook: 'פייסבוק', article: 'כתבה', youtube: 'יוטיוב' };
@@ -30,7 +31,14 @@ const platform: Record<string, string> = { instagram: 'אינסטגרם', facebo
             const meta = [m.outlet, formatHebrewDate(m.date)].filter(Boolean).join(' · ');
             return (
               <li class="card reveal" style={`--delay:${i * 0.08}s`}>
-                {id ? (
+                {id && linkOnly ? (
+                  <a class="yt yt--link" href={m.url} target="_blank" rel="noopener" aria-label={`צפייה ביוטיוב: ${m.title}`}>
+                    <span class="play" aria-hidden="true">
+                      <svg viewBox="0 0 68 48"><rect width="68" height="48" rx="14" /><path d="M27 15v18l16-9z" /></svg>
+                    </span>
+                    <span class="yt-hint">לצפייה ביוטיוב</span>
+                  </a>
+                ) : id ? (
                   <div class="yt" data-yt={id} data-title={m.title}>
                     <img
                       src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
@@ -228,4 +236,16 @@ const platform: Record<string, string> = { instagram: 'אינסטגרם', facebo
   .link-arrow { font-size: 1.3rem; color: var(--accent); transition: transform 0.25s; }
   .link-card:hover .link-arrow { transform: translateX(-4px); }
   .media-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+  .yt--link {
+    text-decoration: none;
+    color: #fff;
+    gap: 14px;
+    align-content: center;
+    background:
+      radial-gradient(80% 90% at 85% 0%, rgb(115 130 87 / 0.45), transparent 60%),
+      linear-gradient(160deg, var(--ink), var(--ink-deep));
+  }
+  .yt--link .play svg rect { fill: rgb(255 255 255 / 0.14); }
+  .yt--link:hover .play { transform: scale(1.08); }
+  .yt-hint { font-weight: 700; font-size: 0.95rem; color: var(--accent-on-dark); }
 </style>

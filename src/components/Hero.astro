@@ -1,5 +1,6 @@
 ---
 import { Picture } from 'astro:assets';
+import { imgFormats } from '../lib/content';
 import type { ImageMetadata } from 'astro';
 import Placeholder from './Placeholder.astro';
 
@@ -34,7 +35,7 @@ const hasMedia = Boolean(image) || draft;
             alt={imageAlt}
             widths={[640, 960, 1280, 1600, 2048]}
             sizes="(max-width: 1160px) calc(100vw - 32px), 1080px"
-            formats={['avif', 'webp']}
+            formats={imgFormats}
             loading="eager"
             fetchpriority="high"
             class="hero-img"
