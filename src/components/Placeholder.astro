@@ -1,0 +1,39 @@
+---
+/** מקום שמור לתמונה שטרם הועלתה – מוצג רק במצב טיוטה */
+interface Props {
+  label?: string;
+  ratio?: string;   // למשל "4/3"
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+const { label = 'מקום לתמונה מהשטח', ratio = '4/3', tone = 'light', class: cls = '' } = Astro.props;
+---
+
+<div class:list={['ph', `ph--${tone}`, cls]} style={`aspect-ratio:${ratio}`} role="img" aria-label={`${label} – להשלמה`}>
+  <svg class="ph-icon" viewBox="0 0 48 48" aria-hidden="true">
+    <rect x="6" y="10" width="36" height="28" rx="4" fill="none" stroke="currentColor" stroke-width="2.2" />
+    <circle cx="17" cy="20" r="3.5" fill="none" stroke="currentColor" stroke-width="2.2" />
+    <path d="M8 34l10-10 8 8 5-5 9 9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
+  </svg>
+  <span class="ph-label">{label}</span>
+  <span class="todo-badge">להשלמה</span>
+</div>
+
+<style>
+  .ph {
+    width: 100%;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 10px;
+    text-align: center;
+    border-radius: var(--radius);
+    padding: 20px;
+    background-image: repeating-linear-gradient(135deg, transparent 0 14px, rgb(0 0 0 / 0.025) 14px 15px);
+  }
+  .ph--light { background-color: var(--paper-2); color: #7a8088; border: 1.5px dashed #c9bfae; }
+  .ph--dark  { background-color: #1e2d3a; color: #93a1ad; border: 1.5px dashed #3d5263;
+               background-image: repeating-linear-gradient(135deg, transparent 0 14px, rgb(255 255 255 / 0.03) 14px 15px); }
+  .ph-icon { width: 44px; height: 44px; opacity: 0.8; }
+  .ph-label { font-size: 0.92rem; font-weight: 600; }
+</style>

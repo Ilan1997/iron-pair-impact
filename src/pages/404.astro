@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/content';
+---
+
+<BaseLayout title="הדף לא נמצא | צמד ברזל" description="הדף לא נמצא." allowIndex={false}>
+  <main id="main" class="nf">
+    <h1>הדף לא נמצא</h1>
+    <p>ייתכן שהקישור הועתק באופן חלקי. מומלץ לפתוח שוב את הקישור המלא שנשלח אליכם.</p>
+    <a href={withBase('/')}>לעמוד הראשי</a>
+  </main>
+</BaseLayout>
+
+<style>
+  .nf { min-height: 100svh; display: grid; place-content: center; gap: 16px; text-align: center; padding: 24px; }
+  h1 { font-size: 2.2rem; }
+  p { color: var(--muted); max-width: 40ch; }
+  a { color: var(--accent); font-weight: 700; }
+</style>

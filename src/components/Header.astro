@@ -1,0 +1,66 @@
+---
+import Logo from './Logo.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  logo?: ImageMetadata;
+  links: { href: string; label: string }[];
+}
+const { logo, links } = Astro.props;
+---
+
+<header class="topbar" data-topbar>
+  <div class="container topbar-inner">
+    <a href="#top" class="brand" aria-label="צמד ברזל – לראש הדף"><Logo image={logo} text="צמד ברזל" height={34} tone="light" /></a>
+    <nav aria-label="ניווט בדף">
+      <ul>
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-topbar]');
+  if (bar) {
+    const onScroll = () => bar.classList.toggle('is-solid', window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>
+
+<style>
+  .topbar {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
+  }
+  .topbar.is-solid {
+    background: rgb(17 28 38 / 0.86);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.06);
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+    gap: 24px;
+  }
+  .brand { text-decoration: none; display: inline-flex; }
+  nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  nav a {
+    color: rgb(255 255 255 / 0.82);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 999px;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  nav a:hover { color: #fff; background: rgb(255 255 255 / 0.1); }
+  @media (max-width: 760px) { nav { display: none; } }
+</style>

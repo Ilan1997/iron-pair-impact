@@ -1,0 +1,86 @@
+---
+/**
+ * הדף המלא – משותף לכל התורמים.
+ * רק הפנייה האישית ואזור התודה משתנים לפי קובץ התורם.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import About from './About.astro';
+import Numbers from './Numbers.astro';
+import Gallery from './Gallery.astro';
+import Testimonials from './Testimonials.astro';
+import Media from './Media.astro';
+import Forward from './Forward.astro';
+import Thanks from './Thanks.astro';
+import Footer from './Footer.astro';
+import { getContent, type Donor } from '../lib/content';
+
+interface Props { donor: Donor }
+const { donor } = Astro.props;
+const c = getContent();
+
+const links = [
+  c.stats.items.length && { href: '#numbers', label: 'במספרים' },
+  (c.photos.length || c.photoPlaceholders) && { href: '#gallery', label: 'בתמונות' },
+  (c.quotes.length || c.quotePlaceholders.length) && { href: '#voices', label: 'קולות מהשטח' },
+  (c.mediaItems.length || c.mediaPlaceholders.length) && { href: '#media', label: 'בתקשורת' },
+].filter(Boolean) as { href: string; label: string }[];
+---
+
+<BaseLayout
+  title={`${donor.name} | צמד ברזל – אוקטובר 2026`}
+  description={c.site.hero.subtitle}
+  ogImage={c.site.ogImage}
+  allowIndex={c.site.allowSearchEngines}
+  draft={c.draft}
+>
+  <Header logo={c.logos.ironPair} links={links} />
+  <main id="main">
+    <Hero
+      image={c.heroImage}
+      imageAlt={c.site.heroImageAlt}
+      draft={c.draft}
+      eyebrow={c.site.hero.eyebrow}
+      title={c.site.hero.title}
+      subtitle={c.site.hero.subtitle}
+      greeting={donor.greeting}
+    />
+    <About title={c.site.about.title} text={c.site.about.text} />
+    <Numbers
+      title={c.site.numbers.title}
+      draft={c.draft}
+      updatedAt={c.stats.updatedAt}
+      final={c.stats.final}
+      items={c.stats.items}
+      achievements={c.stats.achievements}
+    />
+    <Gallery
+      title={c.site.gallery.title}
+      subtitle={c.site.gallery.subtitle}
+      photos={c.photos}
+      placeholders={c.photoPlaceholders}
+    />
+    <Testimonials
+      title={c.site.testimonials.title}
+      visibleCount={c.site.testimonials.visibleCount}
+      quotes={c.quotes}
+      placeholders={c.quotePlaceholders}
+    />
+    <Media
+      title={c.site.media.title}
+      subtitle={c.site.media.subtitle}
+      items={c.mediaItems}
+      placeholders={c.mediaPlaceholders}
+    />
+    <Forward title={c.site.forward.title} text={c.site.forward.text} />
+    <Thanks
+      title={donor.thanksTitle}
+      paragraphs={donor.thanksText}
+      image={c.closingImage}
+      imageAlt={c.site.closingImageAlt}
+      draft={c.draft}
+    />
+  </main>
+  <Footer ironPair={c.logos.ironPair} nifgashim={c.logos.nifgashim} note={c.site.footer.partnershipNote} />
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+interface Props { title: string; text: string }
+const { title, text } = Astro.props;
+---
+
+<section class="forward section" aria-labelledby="forward-title">
+  <div class="container">
+    <div class="inner reveal">
+      <span class="eyebrow">{title}</span>
+      <h2 id="forward-title" class="sr-only">{title}</h2>
+      <p>{text}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .forward { text-align: center; }
+  .inner { max-width: 880px; margin-inline: auto; }
+  .eyebrow { justify-content: center; }
+  .eyebrow::after { content: ''; width: 28px; height: 2px; background: currentColor; border-radius: 2px; }
+  p {
+    margin-top: 26px;
+    font-size: clamp(1.45rem, 1.6vw + 1rem, 2.15rem);
+    line-height: 1.5;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+/** יוצר דף נפרד לכל קובץ בתיקייה content/donors */
+import ReportPage from '../components/ReportPage.astro';
+import { getDonors, type Donor } from '../lib/content';
+
+export function getStaticPaths() {
+  return getDonors().map((donor) => ({ params: { donor: donor.slug }, props: { donor } }));
+}
+
+interface Props { donor: Donor }
+const { donor } = Astro.props;
+---
+
+<ReportPage donor={donor} />

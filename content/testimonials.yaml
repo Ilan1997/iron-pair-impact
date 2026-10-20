@@ -1,0 +1,46 @@
+# ==========================================================
+#  קולות מהשטח – פידבקים
+#
+#  יש להזין כאן אך ורק ציטוטים אמיתיים שהתקבלו.
+#
+#  text      = טקסט הפידבק, בדיוק כפי שנמסר.
+#  name      = שם (אופציונלי). יוצג רק אם showName: true.
+#  role      = תיאור כללי, למשל "מנהלת בית ספר בדרום" (אופציונלי).
+#  showName  = true רק אם התקבל אישור לפרסם את השם.
+#  approved  = true רק אם התקבל אישור לפרסם את הפידבק.
+#  featured  = true כדי להציג את הפידבק בין הראשונים.
+#  status    = published להצגה, draft להסתרה.
+# ==========================================================
+
+items:
+  - text: "להשלמה – כאן ייכנס טקסט הפידבק המלא כפי שהתקבל."
+    name: ""
+    role: "להשלמה – למשל: מנהל/ת בית ספר"
+    showName: false
+    approved: false
+    featured: true
+    status: draft
+
+  - text: "להשלמה – כאן ייכנס טקסט הפידבק המלא כפי שהתקבל."
+    name: ""
+    role: "להשלמה – למשל: מחנכ/ת"
+    showName: false
+    approved: false
+    featured: true
+    status: draft
+
+  - text: "להשלמה – כאן ייכנס טקסט הפידבק המלא כפי שהתקבל."
+    name: ""
+    role: "להשלמה – למשל: מילואימניק/ית מהצמדים"
+    showName: false
+    approved: false
+    featured: true
+    status: draft
+
+  - text: "להשלמה – פידבק נוסף שיוצג בלחיצה על ״לקולות נוספים״."
+    name: ""
+    role: "להשלמה"
+    showName: false
+    approved: false
+    featured: false
+    status: draft

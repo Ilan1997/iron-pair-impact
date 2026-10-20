@@ -1,0 +1,53 @@
+# ==========================================================
+#  גלריית התמונות "רגעים של חיבור מהשטח"
+#
+#  כדי להוסיף תמונה:
+#   1. העלו את קובץ התמונה לתיקייה src/assets/photos
+#   2. הוסיפו כאן פריט עם שם הקובץ המדויק (כולל הסיומת).
+#
+#  file      = שם הקובץ בתיקייה src/assets/photos
+#  alt       = תיאור קצר של מה שרואים בתמונה (לנגישות). חובה.
+#  caption   = כיתוב שיוצג בהגדלה. אפשר להשאיר ריק.
+#  approved  = true רק אם התמונה אושרה לפרסום, כולל אישור מתאים
+#              אם מופיעים בה תלמידים או קטינים.
+#  status    = published להצגה, draft להסתרה.
+#
+#  הפריטים הריקים למטה הם רק תבנית ("להשלמה") ואינם מוצגים במצב final.
+# ==========================================================
+
+items:
+  - file: ""
+    alt: "להשלמה"
+    caption: ""
+    approved: false
+    status: draft
+
+  - file: ""
+    alt: "להשלמה"
+    caption: ""
+    approved: false
+    status: draft
+
+  - file: ""
+    alt: "להשלמה"
+    caption: ""
+    approved: false
+    status: draft
+
+  - file: ""
+    alt: "להשלמה"
+    caption: ""
+    approved: false
+    status: draft
+
+  - file: ""
+    alt: "להשלמה"
+    caption: ""
+    approved: false
+    status: draft
+
+  - file: ""
+    alt: "להשלמה"
+    caption: ""
+    approved: false
+    status: draft

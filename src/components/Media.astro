@@ -1,0 +1,160 @@
+---
+import { youtubeId, formatHebrewDate } from '../lib/content';
+
+interface Item { type: 'youtube' | 'article'; url: string; title: string; outlet: string; date: string }
+interface Props {
+  title: string;
+  subtitle: string;
+  items: Item[];
+  placeholders: Item[];
+}
+const { title, subtitle, items, placeholders } = Astro.props;
+---
+
+{
+  (items.length > 0 || placeholders.length > 0) && (
+    <section class="media section" id="media" aria-labelledby="media-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">ברשתות ובתקשורת</span>
+          <h2 id="media-title">{title}</h2>
+          {subtitle && <p>{subtitle}</p>}
+        </div>
+
+        <ul class="media-grid" role="list">
+          {items.map((m, i) => {
+            const id = m.type === 'youtube' ? youtubeId(m.url) : null;
+            const meta = [m.outlet, formatHebrewDate(m.date)].filter(Boolean).join(' · ');
+            return (
+              <li class="card reveal" style={`--delay:${i * 0.08}s`}>
+                {id ? (
+                  <div class="yt" data-yt={id} data-title={m.title}>
+                    <img
+                      src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      width="480"
+                      height="360"
+                    />
+                    <button type="button" class="play" aria-label={`ניגון הסרטון: ${m.title}`}>
+                      <svg viewBox="0 0 68 48" aria-hidden="true">
+                        <rect width="68" height="48" rx="14" />
+                        <path d="M27 15v18l16-9z" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
+                  <a class="article-link" href={m.url} target="_blank" rel="noopener">
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+                <div class="card-body">
+                  {meta && <p class="meta">{meta}</p>}
+                  <h3>
+                    {m.type === 'article' ? (
+                      <a href={m.url} target="_blank" rel="noopener">{m.title}<span class="sr-only"> (נפתח בחלון חדש)</span></a>
+                    ) : (
+                      m.title
+                    )}
+                  </h3>
+                  {m.type === 'youtube' && (
+                    <a class="ext" href={m.url} target="_blank" rel="noopener">לצפייה ביוטיוב<span class="sr-only"> (נפתח בחלון חדש)</span></a>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+          {placeholders.map((m) => (
+            <li class="card is-todo reveal">
+              <div class="yt-ph">
+                <svg viewBox="0 0 68 48" aria-hidden="true">
+                  <rect width="68" height="48" rx="14" />
+                  <path d="M27 15v18l16-9z" />
+                </svg>
+                <span class="todo-badge">להשלמה</span>
+              </div>
+              <div class="card-body">
+                <h3>{m.title}</h3>
+                <p class="meta">יש להדביק את קישור היוטיוב בקובץ content/media.yaml</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  // הטמעת יוטיוב נטענת רק בלחיצה – שומר על מהירות האתר
+  document.querySelectorAll<HTMLElement>('[data-yt]').forEach((box) => {
+    box.querySelector('button')?.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${box.dataset.yt}?autoplay=1&rel=0`;
+      iframe.title = box.dataset.title ?? 'סרטון';
+      iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      box.replaceChildren(iframe);
+      iframe.focus();
+    });
+  });
+</script>
+
+<style>
+  .media-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: clamp(16px, 2.4vw, 28px);
+  }
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .card.is-todo { background: transparent; box-shadow: none; border: 1.5px dashed #c9bfae; }
+  .yt, .yt-ph, .article-link {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--ink);
+    display: grid;
+    place-items: center;
+  }
+  .yt img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .yt :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .play {
+    position: relative;
+    border: 0;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .play:hover { transform: scale(1.08); }
+  .play svg, .yt-ph svg { width: 68px; height: 48px; }
+  .play svg rect { fill: rgb(17 28 38 / 0.82); }
+  .play svg path { fill: #fff; }
+  .yt-ph { background: var(--paper-2); gap: 12px; align-content: center; }
+  .yt-ph svg rect { fill: #c9bfae; }
+  .yt-ph svg path { fill: var(--paper-2); }
+  .article-link { color: var(--accent-on-dark); font-size: 2.4rem; text-decoration: none; }
+  .card-body { padding: 22px 24px 26px; }
+  .card-body h3 { font-size: 1.22rem; font-weight: 700; line-height: 1.35; }
+  .card-body h3 a { text-decoration: none; }
+  .card-body h3 a:hover { text-decoration: underline; }
+  .meta { font-size: 0.88rem; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
+  .is-todo .meta { margin: 10px 0 0; }
+  .ext {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+</style>

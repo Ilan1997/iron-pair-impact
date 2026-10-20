@@ -1,0 +1,43 @@
+---
+/** מציג את הלוגו אם הועלה לתיקייה src/assets/logos, אחרת סימן טקסטואלי זמני */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  image?: ImageMetadata;
+  text: string;
+  height?: number;
+  tone?: 'light' | 'dark';
+}
+const { image, text, height = 40, tone = 'dark' } = Astro.props;
+---
+
+{
+  image ? (
+    <Image src={image} alt={text} height={height * 2} style={`height:${height}px;width:auto`} loading="lazy" />
+  ) : (
+    <span class:list={['wordmark', `wordmark--${tone}`]} style={`--h:${height}px`}>
+      <svg viewBox="0 0 40 24" aria-hidden="true"><circle cx="13" cy="12" r="8.5" /><circle cx="27" cy="12" r="8.5" /></svg>
+      <span>{text}</span>
+    </span>
+  )
+}
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: calc(var(--h) * 0.52);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .wordmark svg { height: calc(var(--h) * 0.62); width: auto; fill: none; stroke-width: 2.6; }
+  .wordmark--dark { color: var(--ink); }
+  .wordmark--dark svg circle:first-child { stroke: var(--accent); }
+  .wordmark--dark svg circle:last-child { stroke: var(--ink); }
+  .wordmark--light { color: #fff; }
+  .wordmark--light svg circle:first-child { stroke: var(--accent-on-dark); }
+  .wordmark--light svg circle:last-child { stroke: #fff; }
+</style>

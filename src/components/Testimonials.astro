@@ -1,0 +1,137 @@
+---
+interface Quote { text: string; name: string; role: string; showName: boolean }
+interface Props {
+  title: string;
+  visibleCount: number;
+  quotes: Quote[];
+  placeholders: Quote[];
+}
+const { title, visibleCount, quotes, placeholders } = Astro.props;
+const all = [
+  ...quotes.map((q) => ({ ...q, todo: false })),
+  ...placeholders.map((q) => ({ ...q, todo: true })),
+];
+const hasMore = all.length > visibleCount;
+---
+
+{
+  all.length > 0 && (
+    <section class="voices section" id="voices" aria-labelledby="voices-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">קולות מהשטח</span>
+          <h2 id="voices-title">{title}</h2>
+        </div>
+
+        <ul class="quotes" role="list" id="quotes-list">
+          {all.map((q, i) => (
+            <li
+              class:list={['quote reveal', { 'is-extra': i >= visibleCount, 'is-todo': q.todo, 'is-lead': i === 0 }]}
+              style={`--delay:${(i % 3) * 0.08}s`}
+            >
+              {q.todo && <span class="todo-badge">להשלמה</span>}
+              <svg class="mark" viewBox="0 0 40 32" aria-hidden="true">
+                <path d="M0 32V19C0 8.5 5.6 2 16 0l2 4.6C11.6 6.8 9 10.6 9 16h8v16H0Zm22 0V19C22 8.5 27.6 2 38 0l2 4.6C33.6 6.8 31 10.6 31 16h8v16H22Z" />
+              </svg>
+              <blockquote>
+                <p>{q.text}</p>
+              </blockquote>
+              {(q.role || (q.showName && q.name)) && (
+                <p class="who">
+                  {q.showName && q.name && <strong>{q.name}</strong>}
+                  {q.showName && q.name && q.role && <span aria-hidden="true"> · </span>}
+                  {q.role && <span>{q.role}</span>}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+
+        {hasMore && (
+          <div class="more-wrap">
+            <button type="button" class="more" aria-expanded="false" aria-controls="quotes-list" data-more>
+              <span data-more-label>לקולות נוספים</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-more]');
+  const list = document.getElementById('quotes-list');
+  if (btn && list) {
+    list.classList.add('is-collapsed');
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      list.classList.toggle('is-collapsed', open);
+      btn.querySelector('[data-more-label]')!.textContent = open ? 'לקולות נוספים' : 'הצגת פחות';
+      if (!open) list.querySelectorAll('.is-extra').forEach((el) => el.classList.add('is-visible'));
+    });
+  }
+</script>
+
+<style>
+  .voices { background: var(--paper-2); }
+  .quotes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(14px, 2vw, 24px);
+  }
+  .quotes.is-collapsed .is-extra { display: none; }
+  .quote {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: var(--radius);
+    padding: clamp(28px, 3vw, 40px);
+    box-shadow: var(--shadow);
+  }
+  .quote.is-todo { background: rgb(255 255 255 / 0.55); box-shadow: none; border: 1.5px dashed #c9bfae; }
+  .quote .todo-badge { align-self: flex-start; margin-bottom: 14px; }
+  .mark { width: 34px; height: auto; fill: var(--accent); opacity: 0.9; transform: scaleX(-1); }
+  blockquote { margin: 18px 0 0; }
+  blockquote p { font-size: clamp(1.08rem, 0.4vw + 1rem, 1.22rem); line-height: 1.75; font-weight: 500; }
+  .is-todo blockquote p { color: var(--muted); }
+  .who {
+    margin-top: auto;
+    padding-top: 22px;
+    font-size: 0.95rem;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    margin-block-start: 24px;
+  }
+  .who strong { color: var(--ink); font-weight: 700; }
+
+  @media (min-width: 980px) {
+    .quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  .more-wrap { text-align: center; margin-top: 36px; }
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    padding: 12px 26px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .more:hover { background: var(--ink); color: #fff; }
+  .more svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; transition: transform 0.25s; }
+  .more[aria-expanded='true'] svg { transform: rotate(180deg); }
+</style>

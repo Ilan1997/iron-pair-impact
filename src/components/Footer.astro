@@ -1,0 +1,30 @@
+---
+import Logo from './Logo.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  ironPair?: ImageMetadata;
+  nifgashim?: ImageMetadata;
+  note: string;
+}
+const { ironPair, nifgashim, note } = Astro.props;
+---
+
+<footer class="footer">
+  <div class="container inner">
+    <div class="logos">
+      <Logo image={ironPair} text="צמד ברזל" height={48} />
+      <span class="divider" aria-hidden="true"></span>
+      <Logo image={nifgashim} text="נפגשים" height={48} />
+    </div>
+    {note && <p class="note">{note}</p>}
+  </div>
+</footer>
+
+<style>
+  .footer { padding-block: clamp(48px, 7vw, 80px); background: var(--paper); }
+  .inner { display: grid; justify-items: center; gap: 18px; text-align: center; }
+  .logos { display: flex; align-items: center; gap: clamp(20px, 4vw, 40px); flex-wrap: wrap; justify-content: center; }
+  .divider { width: 1px; height: 40px; background: var(--line); }
+  .note { color: var(--muted); font-size: 0.95rem; }
+</style>

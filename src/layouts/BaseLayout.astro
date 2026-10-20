@@ -1,0 +1,96 @@
+---
+import '@fontsource/assistant/hebrew-400.css';
+import '@fontsource/assistant/hebrew-600.css';
+import '@fontsource/assistant/hebrew-700.css';
+import '@fontsource/assistant/hebrew-800.css';
+import '@fontsource/assistant/latin-400.css';
+import '@fontsource/assistant/latin-700.css';
+import '../styles/global.css';
+import { withBase } from '../lib/content';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;      // שם קובץ בתיקייה public
+  allowIndex?: boolean;
+  draft?: boolean;
+}
+
+const { title, description, ogImage, allowIndex = false, draft = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogUrl = ogImage ? new URL(withBase(ogImage), Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#111c26" />
+    {!allowIndex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical.href} />
+    <link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
+
+    <!-- תצוגה מקדימה בשיתוף (וואטסאפ, פייסבוק וכו') -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:site_name" content="צמד ברזל" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    {ogUrl && <meta property="og:image" content={ogUrl} />}
+    {ogUrl && <meta property="og:image:width" content="1200" />}
+    {ogUrl && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content={ogUrl ? 'summary_large_image' : 'summary'} />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">דילוג לתוכן</a>
+    {draft && (
+      <div class="draft-banner" role="note">
+        <strong>תצוגת טיוטה פנימית.</strong> אזורים המסומנים "להשלמה" ונתונים שטרם אומתו יוסתרו כשמצב האתר יוגדר כסופי.
+      </div>
+    )}
+    <slot />
+
+    <script>
+      // אנימציות כניסה עדינות + ספירה של המספרים
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const fmt = new Intl.NumberFormat('he-IL');
+
+      const countUp = (el: HTMLElement) => {
+        const target = Number(el.dataset.count);
+        if (!Number.isFinite(target) || reduce) return;
+        const dur = 1400;
+        const start = performance.now();
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - start) / dur);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = fmt.format(Math.round(target * eased));
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              e.target.classList.add('is-visible');
+              e.target.querySelectorAll<HTMLElement>('[data-count]').forEach(countUp);
+              io.unobserve(e.target);
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+        );
+        document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+      } else {
+        document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>

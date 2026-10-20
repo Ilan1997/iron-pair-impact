@@ -1,0 +1,166 @@
+---
+import { formatHebrewDate } from '../lib/content';
+
+interface Stat { prefix: string; value: number; suffix: string; label: string; verified: boolean }
+interface Achievement { title: string; text: string; status: 'draft' | 'published' }
+interface Props {
+  title: string;
+  draft: boolean;
+  updatedAt: string;
+  final: boolean;
+  items: Stat[];
+  achievements: Achievement[];
+}
+const { title, draft, updatedAt, final, items, achievements } = Astro.props;
+const fmt = new Intl.NumberFormat('he-IL');
+const dateText = formatHebrewDate(updatedAt);
+const statusText = final ? `סיכום חודש אוקטובר · נכון ל־${dateText}` : `נתונים ראשוניים · נכון ל־${dateText}`;
+---
+
+{
+  (items.length > 0 || achievements.length > 0) && (
+    <section class="numbers section" id="numbers" aria-labelledby="numbers-title">
+      <div class="container">
+        <div class="head reveal">
+          <span class="eyebrow">ההשפעה</span>
+          <h2 id="numbers-title">{title}</h2>
+          {updatedAt && (
+            <p class:list={['as-of', { interim: !final }]}>
+              <span class="dot" aria-hidden="true" />
+              {statusText}
+            </p>
+          )}
+        </div>
+
+        {items.length > 0 && (
+          <ul class="stats" role="list">
+            {items.map((s, i) => (
+              <li class="stat reveal" style={`--delay:${i * 0.1}s`}>
+                {draft && !s.verified && <span class="todo-badge stat-badge">טרם אומת</span>}
+                {s.prefix && <span class="stat-prefix">{s.prefix}</span>}
+                <span class="stat-value">
+                  <span data-count={s.value}>{fmt.format(s.value)}</span>
+                  {s.suffix && <span class="stat-suffix">{s.suffix}</span>}
+                </span>
+                <span class="stat-label">{s.label}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {achievements.length > 0 && (
+          <div class="ach">
+            <h3 class="ach-title reveal">הישגים בולטים</h3>
+            <ul class="ach-list" role="list">
+              {achievements.map((a, i) => (
+                <li class:list={['ach-item reveal', { 'is-todo': a.status === 'draft' }]} style={`--delay:${i * 0.08}s`}>
+                  {a.status === 'draft' && <span class="todo-badge">להשלמה</span>}
+                  <h4>{a.title}</h4>
+                  {a.text && <p>{a.text}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .numbers {
+    background: var(--ink);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-top: clamp(64px, 9vw, 110px);
+  }
+  .numbers::before {
+    content: '';
+    position: absolute;
+    inset: auto -10% -40% auto;
+    width: 70vw;
+    aspect-ratio: 1;
+    background: radial-gradient(circle, rgb(166 75 36 / 0.22), transparent 62%);
+    pointer-events: none;
+  }
+  .numbers .eyebrow { color: var(--accent-on-dark); }
+  .head { margin-bottom: clamp(36px, 5vw, 60px); position: relative; }
+  .head h2 { font-size: clamp(2rem, 3.6vw + 0.8rem, 3.25rem); margin-top: 14px; }
+  .as-of {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgb(255 255 255 / 0.75);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #7fc29b; }
+  .as-of.interim .dot { background: #f0c35b; }
+
+  .stats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(14px, 2vw, 24px);
+    position: relative;
+  }
+  .stat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(28px, 3.5vw, 44px);
+    border-radius: var(--radius);
+    background: linear-gradient(160deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.025));
+    border: 1px solid rgb(255 255 255 / 0.09);
+    min-height: 220px;
+  }
+  .stat-badge { position: absolute; top: 16px; inset-inline-end: 16px; }
+  .stat-prefix {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent-on-dark);
+    margin-top: auto;
+  }
+  .stat:not(:has(.stat-prefix)) .stat-value { margin-top: auto; }
+  .stat-value {
+    font-size: clamp(3.4rem, 5.5vw + 1rem, 5.4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: right;
+  }
+  .stat-suffix { font-size: 0.5em; margin-inline-start: 4px; }
+  .stat-label {
+    margin-top: 14px;
+    font-size: 1.12rem;
+    font-weight: 600;
+    color: rgb(255 255 255 / 0.85);
+    line-height: 1.4;
+  }
+
+  .ach { margin-top: clamp(48px, 6vw, 72px); position: relative; }
+  .ach-title { font-size: 1.35rem; margin-bottom: 20px; }
+  .ach-list {
+    list-style: none; margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .ach-item {
+    padding: 24px 26px;
+    border-radius: var(--radius-sm);
+    border-inline-start: 3px solid var(--accent-on-dark);
+    background: rgb(255 255 255 / 0.04);
+  }
+  .ach-item.is-todo { border: 1.5px dashed #3d5263; border-inline-start-width: 1.5px; }
+  .ach-item .todo-badge { margin-bottom: 12px; }
+  .ach-item h4 { margin: 0; font-size: 1.1rem; font-weight: 700; }
+  .ach-item p { margin-top: 6px; color: rgb(255 255 255 / 0.72); font-size: 0.98rem; }
+</style>
