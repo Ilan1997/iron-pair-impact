@@ -40,3 +40,10 @@ items:
     outlet: ""
     date: ""
     status: published
+
+  - type: facebook
+    url: "https://www.facebook.com/share/p/1JGgsD9cpz/"
+    title: "פוסט על צמד ברזל בפייסבוק"
+    outlet: ""
+    date: ""
+    status: published
