@@ -67,6 +67,7 @@ const statsSchema = z.object({
         value: z.number({ message: 'value חייב להיות מספר בלי פסיקים, למשל 15000' }),
         suffix: str,
         label: z.string(),
+        detail: str,
         verified: z.boolean().default(false),
         note: str,
       }),

@@ -1,7 +1,7 @@
 ---
 import { formatHebrewDate } from '../lib/content';
 
-interface Stat { prefix: string; value: number; suffix: string; label: string; verified: boolean }
+interface Stat { prefix: string; value: number; suffix: string; label: string; detail: string; verified: boolean }
 interface Props {
   title: string;
   draft: boolean;
@@ -40,6 +40,7 @@ const statusText = final ? `סיכום חודש אוקטובר · נכון ל־$
                 {s.suffix && <span class="stat-suffix">{s.suffix}</span>}
               </span>
               <span class="stat-label">{s.label}</span>
+              {s.detail && <span class="stat-detail">{s.detail}</span>}
             </li>
           ))}
         </ul>
@@ -83,10 +84,11 @@ const statusText = final ? `סיכום חודש אוקטובר · נכון ל־$
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: 1fr;
     gap: clamp(14px, 2vw, 24px);
     position: relative;
   }
+  @media (min-width: 700px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .stat {
     position: relative;
     display: flex;
@@ -127,6 +129,14 @@ const statusText = final ? `סיכום חודש אוקטובר · נכון ל־$
     text-align: right;
   }
   .stat-suffix { font-size: 0.5em; margin-inline-start: 4px; }
+  .stat-detail {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-on-dark);
+  }
   .stat-label {
     margin-top: 14px;
     font-size: 1.12rem;
